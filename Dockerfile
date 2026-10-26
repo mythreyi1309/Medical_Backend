@@ -1,7 +1,6 @@
 
-# Stage 1: Build the Spring Boot application
+# Stage 1: Build the application
 FROM maven:3.9-eclipse-temurin-17 AS build
-
 WORKDIR /app
 
 COPY pom.xml .
@@ -11,7 +10,6 @@ RUN mvn -DskipTests package
 
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre
-
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
@@ -19,6 +17,3 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-app.jwt.secret=${JWT_SECRET}
-app.jwt.expiration=3600000
