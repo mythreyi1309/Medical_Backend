@@ -20,3 +20,5 @@ EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
+app.jwt.secret=${JWT_SECRET}
+app.jwt.expiration=3600000
