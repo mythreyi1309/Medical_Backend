@@ -38,7 +38,7 @@ public class MedicationEntity {
     private LocalTime reminderTime;
 
     // New: supports multiple reminder times per medication
-//    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
         name = "medication_reminder_times",
         joinColumns = @JoinColumn(name = "medication_id")
