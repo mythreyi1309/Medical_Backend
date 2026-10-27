@@ -37,7 +37,23 @@ public class SecurityConfig {
                     SessionCreationPolicy.STATELESS
                 )
             )
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((req, res, e) -> {
+                    res.setStatus(401);
+                    res.setContentType("application/json");
+                    res.getWriter().write("{\"message\":\"Authentication required or token invalid/expired\"}");
+                })
+                .accessDeniedHandler((req, res, e) -> {
+                    res.setStatus(403);
+                    res.setContentType("application/json");
+                    res.getWriter().write("{\"message\":\"Access denied for your role\"}");
+                })
+            )
             .authorizeHttpRequests(auth -> auth
+
+                // CORS preflight + Spring's error dispatch must never be blocked
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/error").permitAll()
 
                 // Admin and doctor login
                 .requestMatchers(
